@@ -1,35 +1,57 @@
-import React, { useContext } from "react";
-import {UserContext} from "./UserContext"
-// import './App.css'
-
-
+import React, { useState , useEffect, useContext } from "react";
+import {UserContext} from "./UserContext" 
+import { MDBDataTable } from 'mdbreact';
 
 const WeeklyData = () => {
    
-    // var utc = new Date().toJSON().slice(0,10).replace(/-/g,'/');
-    //  console.log(utc)
-    const {state, setState} = useContext(UserContext);
-    console.log(state, "yuva")
+
+  const {state, setState} = useContext(UserContext);
+  const [weeklyData, SetWeeklyData] = useState({data: []});
+
+  useEffect(() => {
+    SetWeeklyData(state);
+    console.log("hai");
+    console.log(weeklyData, "weekly");
+
+  },[state.data , weeklyData.data]);
+
+
+  const value = {
+    columns: [
+      {
+        label: 'Date',
+        field: 'date',
+        sort: 'asc',
+        width: 150
+      },
+      {
+        label: 'Category',
+        field: 'category',
+        sort: 'asc',
+        width: 270
+      },
+      {
+        label: 'Division',
+        field: 'division',
+        sort: 'asc',
+        width: 200
+      },
+      {
+        label: 'Amount',
+        field: 'amount',
+        sort: 'asc',
+        width: 200
+      }
+    ],
+    rows: weeklyData.data};
     return(
         <div>
-            {/* <h1>{utc}</h1> */}
-            <ul className="list-group">
-          {state.data.map((item,idx) => {
-            return (
-              <li className="list-group-item" key={idx}>
-                <span>
-                  <span>{item.category}</span>
-                  <span>{item.division}</span>
-                  <span>{item.amount}</span>
-                  <span>{item.date}</span>
-                  <span>{item.income}</span>
-                  <span>{item.expense}</span>
-                    {/* <span className="float-right" onClick={props.deleteTodo.bind(this, item._id)}> Delete </span> */}
-                  </span>
-              </li>
-            );
-          })}
-        </ul>
+            <MDBDataTable
+              bootstrap4
+              striped
+              bordered
+              small
+              data={value} />
         </div>
     );
 }

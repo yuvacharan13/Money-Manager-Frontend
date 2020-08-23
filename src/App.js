@@ -3,6 +3,9 @@ import './App.css';
 // import AddButton from "./AddButton.js"
 // import DisplayData from "./DisplayData.js"
 import "bootstrap/dist/css/bootstrap.css";
+
+import { Navbar, NavbarLink } from 'styled-navbar-component';
+import { Nav } from 'styled-nav-component';
 import PopUp from "./PopUp.js"
 import {UserContext} from "./UserContext"
 import HomeData from "./HomeData";
@@ -33,6 +36,13 @@ const App = () => {
       .then(response => {setState(response);})
   }, [count])
 
+//   let data = [
+//     { id: 1, date: '...', lastName: '...', address: '...'},
+//     { id: 2, 'firstName': '...', lastName: '...', address: '...'},
+//  ]
+
+  
+ 
 
   const getData = (category,division,amount,date,income,expense) => {
     const postObj =  {"category": category, "division": division,"amount": amount, "date": date, "income": income, "expense": expense}
@@ -54,11 +64,13 @@ const App = () => {
       });  
   };
 
+  // export const NavbarLight = () => {
+  //   const [hidden, setHidden] = useState(true);
 
 
   return (
     <div className="App">
-        <nav>
+        {/* <nav>
           <ul className="flex">
             <li>
               <Link to="/HomeData">Home</Link>
@@ -73,7 +85,30 @@ const App = () => {
               <Link to="/MonthlyData">MonthlyData</Link>
             </li>
           </ul>
-        </nav>
+        </nav> */}
+        <Navbar expandSm light>
+      <Nav start>
+        <NavbarLink light brand href="/">Money Manager</NavbarLink>
+        {/* <Nav end>
+          <Button
+            light
+            outline
+            toggleCollapse
+            expandSm
+            onClick={() => setHidden(!hidden)}
+          >
+            <span>&#9776;</span>
+          </Button>
+        </Nav> */}
+      </Nav>
+      <Nav start collapse expandSm >
+        {/* <NavbarLink light active>Active</NavbarLink> */}
+        <NavbarLink light href="/DailyData">Daily Data</NavbarLink>
+        <NavbarLink light href="/WeeklyData">Weekly Data</NavbarLink>
+        <NavbarLink light href="/WeeklyData">Montly Data</NavbarLink>
+        {/* <NavbarLink light disabled href="#">Disabled</NavbarLink> */}
+      </Nav>
+    </Navbar>
         {/* <DisplayData displayData={state.data}/> */}
         <Switch>
         <UserContext.Provider value={{state, setState}}>
@@ -85,12 +120,16 @@ const App = () => {
         </UserContext.Provider>
           
 				</Switch>
+        
+        
         <PopUp getData={getData}/>
     </div>
   );
 }
 
 export default App;
+
+
 
 
 

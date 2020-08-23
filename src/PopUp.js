@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button'
 import { useHistory } from 'react-router-dom';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Form from 'react-bootstrap/Form'
 
 
 
@@ -17,12 +18,8 @@ const PopUp = (props) => {
 
     const [category, SetCategory] = useState("");
     const [amount, SetAmount] = useState("");
-    // const [date, SetDate] = useState("");
     const [division, SetDivision] = useState("");
 
-    // if(date == ""){
-    //     SetDate(utc)
-    // }
 
 
     const handleCategory = (e) => {
@@ -34,7 +31,7 @@ const PopUp = (props) => {
     };
     
     
-    const handleClose = () => {
+    const saveChanges = () => {
         setShow(false);
         console.log(category);
         props.getData(category,division,amount,curDate,incometab,expensetab);
@@ -42,17 +39,19 @@ const PopUp = (props) => {
         SetAmount("");
     }
     
+    const handleClose = () => {
+      setShow(false);
+      SetCategory("");
+      SetAmount("");
+  }
+
     const [incometab, SetIncometab] = useState(false);
     const [expensetab, SetExpensetab] = useState(false);
     
-    // var incomeButton = document.getElementById('incomeButton');
-    // var expenseButton = document.getElementById('expenseButton');
 
     const handleIncome = () => {
        if(incometab == false){
         SetIncometab(true); SetExpensetab(false);
-        // incomeButton.style.backgroundColor = "green";
-        // expenseButton.style.backgroundColor = "grey";
        }
     }
 
@@ -63,22 +62,10 @@ const PopUp = (props) => {
     const handleExpense = () => {
         if(expensetab == false){
          SetExpensetab(true); SetIncometab(false); 
-        //  expenseButton.style.backgroundColor = "red";
-        //  incomeButton.style.backgroundColor = "grey";
         }
     }
 
-    
-
-    // if(incometab == true){
         
-    // }
-
-    
-    // if(expensetab == true){
-        
-    // }
-    
     const [date, SetDate] = useState(new Date());
 
     const [curDate, SetCurDate] = useState(date.toJSON().slice(0,10).replace(/-/g,'/'))
@@ -86,7 +73,6 @@ const PopUp = (props) => {
     const handleDate = (e) => {
         SetDate(e);
         SetCurDate(e.toJSON().slice(0,10).replace(/-/g,'/'));
-        
       };
   
     return (
@@ -108,11 +94,23 @@ const PopUp = (props) => {
              selected={date}
              onChange={handleDate}
             />
-             
-             
-          <form>
-             <label>Category</label>
-              <select value={category} onChange={handleCategory}>
+          <Form>
+
+
+  
+  <Form.Group>
+    <Form.Label>Division</Form.Label>
+    <Form.Control as="select" value={division} onChange={handleDivision} required>
+                <option value="Not-Selected">Select...</option>
+                <option value="Office">Office</option>
+                <option value="Personal">Personal</option>
+    </Form.Control>
+  </Form.Group>
+  
+
+  <Form.Group>
+    <Form.Label>Category</Form.Label>
+    <Form.Control as="select" value={category} onChange={handleCategory}>
                 <option value="Not-Selected">Select...</option>
                 <option value="Food">Food</option>
                 <option value="Fuel">Fuel</option>
@@ -121,28 +119,26 @@ const PopUp = (props) => {
                 <option value="Medical">Medical</option>
                 <option value="Trip">Trip</option>
                 <option value="undisclosable">undisclosable</option>
-              </select>
-          </form>
+    </Form.Control>
+  </Form.Group>
 
-          <form>
-             <label>Division</label>
-              <select value={division} onChange={handleDivision}>
-                <option value="Not-Selected">Select...</option>
-                <option value="Office">Office</option>
-                <option value="Personal">Personal</option>
-              </select>
-          </form>
-
-            <input
-            type="text"
+  <Form.Group>
+    <Form.Label>Amount</Form.Label>
+    <Form.Control type="text"
             placeholder="Amount"
             className="form-control"
             onChange={handleAmount}
-            value={amount} />
+            value={amount} 
+            required/> 
+  </Form.Group>
+
+
+  </Form>
+
           </Modal.Body>
 
           <Modal.Footer>
-            <Button variant="primary" onClick={handleClose}>
+            <Button variant="primary" onClick={saveChanges}>
               Save Changes
             </Button>
           </Modal.Footer>
@@ -152,24 +148,3 @@ const PopUp = (props) => {
   }
   
   export default PopUp;
-
-//   class Example extends React.Component {
-//     state = {
-//       startDate: new Date()
-//     };
-   
-//     handleChange = date => {
-//       this.setState({
-//         startDate: date
-//       });
-//     };
-   
-//     render() {
-//       return (
-//         <DatePicker
-//           selected={this.state.startDate}
-//           onChange={this.handleChange}
-//         />
-//       );
-//     }
-//   }
